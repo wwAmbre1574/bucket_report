@@ -11,7 +11,7 @@
   <script>
     async function downloadData() {
       document.getElementById("status").innerText = "⏳ 處理中...";
-      const res = await fetch("https://your-api-domain.com/export-sentio", { method: "GET" });
+      const res = await fetch("tbtclist-production.up.railway.app", { method: "GET" });
 
       const result = await res.json();
       if (result.success) {
