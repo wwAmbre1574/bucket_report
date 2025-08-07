@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>📊 一鍵下載 Sentio 數據</title>
+</head>
+<body>
+  <h2>📊 Sentio 數據彙整</h2>
+  <button onclick="downloadData()">取得最新 CSV</button>
+  <p id="status"></p>
+
+  <script>
+    async function downloadData() {
+      document.getElementById("status").innerText = "⏳ 處理中...";
+      const res = await fetch("https://your-api-domain.com/export-sentio", { method: "GET" });
+
+      const result = await res.json();
+      if (result.success) {
+        const a = document.createElement("a");
+        a.href = result.download_url;
+        a.download = "sentio_data.csv";
+        a.click();
+        document.getElementById("status").innerText = "✅ 已下載";
+      } else {
+        document.getElementById("status").innerText = "❌ 錯誤：" + result.error;
+      }
+    }
+  </script>
+</body>
+</html>
