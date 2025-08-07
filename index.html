@@ -11,6 +11,57 @@
   <script>
     async function downloadData() {
       document.getElementById("status").innerText = "⏳ 處理中...";
+
+      try {
+        // 設定 timeout（10 秒）
+        const controller = new AbortController();
+        const timeout = setTimeout(() => controller.abort(), 10000);
+
+        // 發送 API 請求
+        const res = await fetch("https://tbtclist-production.up.railway.app/export-sentio", {
+          method: "GET",
+          signal: controller.signal
+        });
+
+        clearTimeout(timeout); // 清除 timeout 計時器
+
+        const result = await res.json();
+
+        if (result.success) {
+          const a = document.createElement("a");
+          a.href = result.download_url;
+          a.download = "sentio_data.csv";
+          a.click();
+          document.getElementById("status").innerText = "✅ 已下載";
+        } else {
+          document.getElementById("status").innerText = "❌ 錯誤：" + result.error;
+        }
+
+      } catch (error) {
+        // 若有錯誤（例如 timeout、server down）
+        document.getElementById("status").innerText = "❌ 發生錯誤：" + error.message;
+      }
+    }
+  </script>
+</body>
+</html>
+
+
+
+<!-- 
+<!DOCTYPE html>
+<html>
+<head>
+  <title>📊 一鍵下載 Sentio 數據</title>
+</head>
+<body>
+  <h2>📊 Sentio 數據彙整</h2>
+  <button onclick="downloadData()">取得最新 CSV</button>
+  <p id="status"></p>
+
+  <script>
+    async function downloadData() {
+      document.getElementById("status").innerText = "⏳ 處理中...";
       const res = await fetch("https://tbtclist-production.up.railway.app", { method: "GET" });
 
       const result = await res.json();
@@ -26,4 +77,4 @@
     }
   </script>
 </body>
-</html>
+</html> -->
