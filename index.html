@@ -38,12 +38,20 @@
         }
 
       } catch (error) {
-        // 若有錯誤（例如 timeout、server down）
-        document.getElementById("status").innerText = "❌ 發生錯誤：" + JSON.stringify(error);
-        
-        // 補充更多錯誤資訊
         console.error("錯誤物件:", error);
-        alert("錯誤內容: " + error.message);
+
+        let msg = "";
+
+        if (error instanceof Error) {
+          msg = error.message;
+        } else if (typeof error === "object") {
+          msg = JSON.stringify(error);
+        } else {
+          msg = String(error);
+        }
+
+        alert("錯誤內容: " + msg);
+        document.getElementById("status").innerText = "❌ 發生錯誤：" + msg;
       }
     }
   </script>
