@@ -39,7 +39,11 @@
 
       } catch (error) {
         // 若有錯誤（例如 timeout、server down）
-        document.getElementById("status").innerText = "❌ 發生錯誤：" + error.message;
+        document.getElementById("status").innerText = "❌ 發生錯誤：" + JSON.stringify(error);
+        
+        // 補充更多錯誤資訊
+        console.error("錯誤物件:", error);
+        alert("錯誤內容: " + error.message);
       }
     }
   </script>
